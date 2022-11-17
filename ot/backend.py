@@ -1167,6 +1167,16 @@ class NumpyBackend(Backend):
     def is_floating_point(self, a):
         return a.dtype.kind == "f"
 
+    ############################# FOR OPW #############################
+    #attribute mgrid
+    @property
+    def mgrid(self):
+        return np.mgrid
+
+    @property
+    def pi(self):
+        return np.pi
+
 
 class JaxBackend(Backend):
     """

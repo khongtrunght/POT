@@ -51,9 +51,9 @@ setup(
     description='Python Optimal Transport Library',
     long_description=README,
     long_description_content_type='text/markdown',
-    author=u'Remi Flamary, Nicolas Courty',
+    author=u'Remi Flamary, Nicolas Courty, Phan Manh Tuan',
     author_email='remi.flamary@gmail.com, ncourty@gmail.com',
-    url='https://github.com/PythonOT/POT',
+    url='https://github.com/khongtrunght/POT',
     packages=find_packages(exclude=["benchmarks"]),
     ext_modules=cythonize(Extension(
         name="ot.lp.emd_wrap",
@@ -64,7 +64,7 @@ setup(
         extra_link_args=link_args
     )),
     platforms=['linux', 'macosx', 'windows'],
-    download_url='https://github.com/PythonOT/POT/archive/{}.tar.gz'.format(__version__),
+    download_url='https://github.com/khongtrunght/POT/archive/{}.tar.gz'.format(__version__),
     license='MIT',
     scripts=[],
     data_files=[],

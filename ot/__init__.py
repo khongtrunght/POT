@@ -5,6 +5,7 @@
     :py:mod:`ot.utils`, :py:mod:`ot.datasets`,
     :py:mod:`ot.gromov`, :py:mod:`ot.smooth`
     :py:mod:`ot.stochastic`, :py:mod:`ot.partial`, :py:mod:`ot.regpath`
+    :py:mod:`ot.opw`
     , :py:mod:`ot.unbalanced`.
     The following sub-modules are not imported due to additional dependencies:
     - :any:`ot.dr` : depends on :code:`pymanopt` and :code:`autograd`.
@@ -40,6 +41,7 @@ from .lp import emd, emd2, emd_1d, emd2_1d, wasserstein_1d
 from .bregman import sinkhorn, sinkhorn2, barycenter
 from .unbalanced import (sinkhorn_unbalanced, barycenter_unbalanced,
                          sinkhorn_unbalanced2)
+from .opw import opw_sinkhorn, opw_sinkhorn2
 from .da import sinkhorn_lpl1_mm
 from .sliced import sliced_wasserstein_distance, max_sliced_wasserstein_distance
 from .gromov import (gromov_wasserstein, gromov_wasserstein2,
@@ -61,5 +63,5 @@ __all__ = ['emd', 'emd2', 'emd_1d', 'sinkhorn', 'sinkhorn2', 'utils',
            'sinkhorn_unbalanced2', 'sliced_wasserstein_distance',
            'gromov_wasserstein', 'gromov_wasserstein2', 'gromov_barycenters', 'fused_gromov_wasserstein', 'fused_gromov_wasserstein2',
             'max_sliced_wasserstein_distance', 'weak_optimal_transport',
-            'factored_optimal_transport', 
+            'factored_optimal_transport',
            'smooth', 'stochastic', 'unbalanced', 'partial', 'regpath']
