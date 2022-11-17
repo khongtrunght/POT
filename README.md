@@ -8,6 +8,8 @@
 [![Anaconda downloads](https://anaconda.org/conda-forge/pot/badges/downloads.svg)](https://anaconda.org/conda-forge/pot)
 [![License](https://anaconda.org/conda-forge/pot/badges/license.svg)](https://github.com/PythonOT/POT/blob/master/LICENSE)
 
+This fork of POT add Order Preserving Optimal Transport to the library.
+
 This open source Python library provide several solvers for optimization
 problems related to Optimal Transport for signal, image processing and machine
 learning.
@@ -93,7 +95,7 @@ The library has been tested on Linux, MacOSX and Windows. It requires a C++ comp
 You can install the toolbox through PyPI with:
 
 ```console
-pip install POT
+pip install git+https://github.com/khongtrunght/POT.git
 ```
 
 or get the very latest version by running:
@@ -273,15 +275,15 @@ You can also post bug reports and feature requests in Github issues. Make sure t
 
 [35] Deshpande, I., Hu, Y. T., Sun, R., Pyrros, A., Siddiqui, N., Koyejo, S., ... & Schwing, A. G. (2019). [Max-sliced wasserstein distance and its use for gans](https://openaccess.thecvf.com/content_CVPR_2019/papers/Deshpande_Max-Sliced_Wasserstein_Distance_and_Its_Use_for_GANs_CVPR_2019_paper.pdf). In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (pp. 10648-10656).
 
-[36] Liutkus, A., Simsekli, U., Majewski, S., Durmus, A., & Stöter, F. R. 
-(2019, May). [Sliced-Wasserstein flows: Nonparametric generative modeling 
-via optimal transport and diffusions](http://proceedings.mlr.press/v97/liutkus19a/liutkus19a.pdf). In International Conference on 
+[36] Liutkus, A., Simsekli, U., Majewski, S., Durmus, A., & Stöter, F. R.
+(2019, May). [Sliced-Wasserstein flows: Nonparametric generative modeling
+via optimal transport and diffusions](http://proceedings.mlr.press/v97/liutkus19a/liutkus19a.pdf). In International Conference on
 Machine Learning (pp. 4104-4113). PMLR.
 
 [37] Janati, H., Cuturi, M., Gramfort, A. [Debiased sinkhorn barycenters](http://proceedings.mlr.press/v119/janati20a/janati20a.pdf) Proceedings of the 37th International
 Conference on Machine Learning, PMLR 119:4692-4701, 2020
 
-[38] C. Vincent-Cuaz, T. Vayer, R. Flamary, M. Corneli, N. Courty, [Online Graph 
+[38] C. Vincent-Cuaz, T. Vayer, R. Flamary, M. Corneli, N. Courty, [Online Graph
 Dictionary Learning](https://arxiv.org/pdf/2102.06555.pdf), International Conference on Machine Learning (ICML), 2021.
 
 [39] Gozlan, N., Roberto, C., Samson, P. M., & Tetali, P. (2017). [Kantorovich duality for general transport costs and applications](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.712.1825&rep=rep1&type=pdf). Journal of Functional Analysis, 273(11), 3327-3405.
