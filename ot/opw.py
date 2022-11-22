@@ -64,6 +64,74 @@ def opw_sinkhorn2(a, b, M,lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', n
 
     return sinkhorn2(a, b, M_hat, reg,method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
 
+#-------------------------------PARTIAL-------------------------------
+
+def POT_feature_2sides(a,b,D, m=None, nb_dummies=1):
+    nx = get_backend(D)
+    if m < 0:
+        raise ValueError("Problem infeasible. Parameter m should be greater"
+                        " than 0.")
+    elif m > np.min((np.sum(a), np.sum(b))):
+        raise ValueError("Problem infeasible. Parameter m should lower or"
+                        " equal than min(|a|_1, |b|_1).")
+    # import ipdb; ipdb.set_trace()
+    b_extended = np.append(b, [(np.sum(a) - m) / nb_dummies] * nb_dummies)
+    # b_extended = nx.concatenate(b, [(nx.sum(a) - m) / nb_dummies] * nb_dummies)
+    a_extended = np.append(a, [(np.sum(b) - m) / nb_dummies] * nb_dummies)
+
+    b_extended = nx.from_numpy(b_extended)
+    a_extended = nx.from_numpy(a_extended)
+    
+    D_extended = nx.zeros((len(a_extended), len(b_extended)))
+    D_extended[-nb_dummies:, -nb_dummies:] = nx.max(D) * 2
+    D_extended[:len(a), :len(b)] = D
+    return a_extended, b_extended, D_extended
+
+def POT_feature_1side(a,b,D, m=0.8, nb_dummies=1):
+    nx = get_backend(D)
+    a = a*m
+    '''drop on side b --> and dummpy point on side a'''
+    a_extended = np.append(a, [(np.sum(b) - m) / nb_dummies] * nb_dummies)
+    D_extended = nx.zeros((len(a_extended), len(b)))
+    D_extended[:len(a), :len(b)] = D
+
+    b = nx.from_numpy(b)
+    a_extended = nx.from_numpy(a_extended)
+    return a_extended, b,D_extended
+
+def opw_partial_wasserstein(a, b, M, m = None,drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
+    a, b, M = list_to_array(a, b, M)
+    nx = get_backend(M)
+    
+    reg = lambda2
+    E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
+    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
+    
+    if drop_both_side:
+        a,b,M = POT_feature_2sides(a,b,M,m)
+    else:
+        '''drop on side b --> and dummpy point on side a'''
+        a,b,M = POT_feature_1side(a,b,M,m)
+
+    return sinkhorn(a, b, M, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
+
+
+def opw_partial_wasserstein2(a, b, M, m = None,drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
+    a, b, M = list_to_array(a, b, M)
+    nx = get_backend(M)
+    
+    reg = lambda2
+    E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
+    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
+    
+    if drop_both_side:
+        a,b,M = POT_feature_2sides(a,b,M,m)
+    else:
+        '''drop on side b --> and dummpy point on side a'''
+        a,b,M = POT_feature_1side(a,b,M,m)
+
+    return sinkhorn2(a, b, M, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
+
 
 def get_E_F(N, M, backend):
     nx = backend
