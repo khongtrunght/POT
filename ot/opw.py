@@ -188,7 +188,7 @@ def compute_OPW_costs(D,lambda1, lambda2, delta, m, dropBothSides):
     a = np.ones(D.shape[0])/D.shape[0]
     b = np.ones(D.shape[1])/D.shape[1]
     
-    D = opw_distance(D, lambda1, lambda2, delta,nx)
+    D = opw_distance(D, lambda1, lambda2, delta)
     if dropBothSides:
         a,b,D = POT_feature_2sides(a,b,D,m)
     else:
