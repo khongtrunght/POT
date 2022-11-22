@@ -99,7 +99,7 @@ def POT_feature_1side(a,b,D, m=0.8, nb_dummies=1,dummy_value=0):
     a_extended = nx.from_numpy(a_extended)
     return a_extended, b,D_extended
 
-def opw_partial_wasserstein(a, b, M, m = None,drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
+def opw_partial_wasserstein(a, b, M, m = None, nb_dummies=1,dummy_value=0, drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
     a, b, M = list_to_array(a, b, M)
     nx = get_backend(M)
     
@@ -108,15 +108,15 @@ def opw_partial_wasserstein(a, b, M, m = None,drop_both_side = False , lambda1=5
     M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
     
     if drop_both_side:
-        a,b,M = POT_feature_2sides(a,b,M,m)
+        a,b,M = POT_feature_2sides(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
     else:
         '''drop on side b --> and dummpy point on side a'''
-        a,b,M = POT_feature_1side(a,b,M,m)
+        a,b,M = POT_feature_1side(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
 
     return sinkhorn(a, b, M, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
 
 
-def opw_partial_wasserstein2(a, b, M, m = None,drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
+def opw_partial_wasserstein2(a, b, M, m = None, nb_dummies=1,dummy_value=0 ,drop_both_side = False , lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', numItermax=1000, stopThr=1e-9, verbose=False, log=False, warn=True, **kwargs):
     a, b, M = list_to_array(a, b, M)
     nx = get_backend(M)
     
@@ -125,10 +125,10 @@ def opw_partial_wasserstein2(a, b, M, m = None,drop_both_side = False , lambda1=
     M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
     
     if drop_both_side:
-        a,b,M = POT_feature_2sides(a,b,M,m)
+        a,b,M = POT_feature_2sides(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
     else:
         '''drop on side b --> and dummpy point on side a'''
-        a,b,M = POT_feature_1side(a,b,M,m)
+        a,b,M = POT_feature_1side(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
 
     return sinkhorn2(a, b, M, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
 
