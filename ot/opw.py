@@ -3,7 +3,7 @@
 """
 
 import warnings
-
+import torch
 import numpy as np
 from ot.bregman import sinkhorn, sinkhorn2
 from ot.utils import list_to_array
@@ -34,7 +34,7 @@ def opw_sinkhorn(a, b, M,lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', nu
     reg = lambda2
 
     E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
-    M_hat = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
+    M_hat = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + np.log(delta * nx.sqrt(2 * math.pi)))
 
     return sinkhorn(a, b, M_hat, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
 
@@ -105,7 +105,7 @@ def opw_partial_wasserstein(a, b, M, m = None, nb_dummies=1,dummy_value=0, drop_
     
     reg = lambda2
     E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
-    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
+    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * np.sqrt(2 * math.pi)))
     
     if drop_both_side:
         a,b,M = POT_feature_2sides(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
@@ -122,7 +122,7 @@ def opw_partial_wasserstein2(a, b, M, m = None, nb_dummies=1,dummy_value=0 ,drop
     
     reg = lambda2
     E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
-    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * nx.sqrt(2 * math.pi)))
+    M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + nx.log(delta * np.sqrt(2 * math.pi)))
     
     if drop_both_side:
         a,b,M = POT_feature_2sides(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
@@ -135,7 +135,8 @@ def opw_partial_wasserstein2(a, b, M, m = None, nb_dummies=1,dummy_value=0 ,drop
 
 def get_E_F(N, M, backend):
     nx = backend
-    mid_para = nx.sqrt((1/(N**2) + 1/(M**2)))
+
+    mid_para = np.sqrt((1/(N**2) + 1/(M**2)))
 
     a_n = nx.arange(start=1, stop=N+1)
     b_m = nx.arange(start=1, stop=M+1)

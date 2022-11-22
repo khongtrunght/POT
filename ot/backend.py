@@ -1654,16 +1654,16 @@ class TorchBackend(Backend):
         return torch.matmul(a, b)
 
     def abs(self, a):
-        # return torch.abs(a)
-        return torch.abs(torch.tensor(a)).item()
+        return torch.abs(a)
+        # return torch.abs(torch.tensor(a)).item()
 
     def exp(self, a):
-        # return torch.exp(a)
-        return torch.exp(torch.tensor(a)).item()
+        return torch.exp(a)
+        # return torch.exp(torch.tensor(a)).item()
 
     def log(self, a):
-        # return torch.log(a)
-        return torch.log(torch.tensor(a)).item()
+        return torch.log(a)
+        # return torch.log(torch.tensor(a)).item()
 
     def sqrt(self, a):
         # return torch.sqrt(a)
