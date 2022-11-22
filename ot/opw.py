@@ -66,7 +66,7 @@ def opw_sinkhorn2(a, b, M,lambda1=50, lambda2=0.1, delta=1, method='sinkhorn', n
 
 #-------------------------------PARTIAL-------------------------------
 
-def POT_feature_2sides(a,b,D, m=None, nb_dummies=1):
+def POT_feature_2sides(a,b,D, m=None, nb_dummies=1,dummy_value = 0):
     nx = get_backend(D)
     if m < 0:
         raise ValueError("Problem infeasible. Parameter m should be greater"
@@ -82,17 +82,17 @@ def POT_feature_2sides(a,b,D, m=None, nb_dummies=1):
     b_extended = nx.from_numpy(b_extended)
     a_extended = nx.from_numpy(a_extended)
     
-    D_extended = nx.zeros((len(a_extended), len(b_extended)))
+    D_extended = nx.ones((len(a_extended), len(b_extended)))*dummy_value
     D_extended[-nb_dummies:, -nb_dummies:] = nx.max(D) * 2
     D_extended[:len(a), :len(b)] = D
     return a_extended, b_extended, D_extended
 
-def POT_feature_1side(a,b,D, m=0.8, nb_dummies=1):
+def POT_feature_1side(a,b,D, m=0.8, nb_dummies=1,dummy_value=0):
     nx = get_backend(D)
     a = a*m
     '''drop on side b --> and dummpy point on side a'''
     a_extended = np.append(a, [(np.sum(b) - m) / nb_dummies] * nb_dummies)
-    D_extended = nx.zeros((len(a_extended), len(b)))
+    D_extended = nx.ones((len(a_extended), len(b)))*dummy_value
     D_extended[:len(a), :len(b)] = D
 
     b = nx.from_numpy(b)
