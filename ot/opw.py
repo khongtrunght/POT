@@ -112,9 +112,9 @@ def opw_partial_wasserstein(a, b, M, m = None, nb_dummies=1,dummy_value=0, drop_
     else:
         '''drop on side b --> and dummpy point on side a'''
         a,b,M = POT_feature_1side(a,b,M,m,nb_dummies=nb_dummies,dummy_value=dummy_value)
-    print(type(a))
-    print(type(b))
-    print(type(M))
+    a = a.double()
+    b = b.double()
+    M = M.double()
     return sinkhorn(a, b, M, reg, method=method, numItermax=numItermax, stopThr=stopThr, verbose=verbose, log=log, warn=warn, **kwargs)
 
 
