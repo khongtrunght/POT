@@ -106,7 +106,7 @@ def opw_partial_wasserstein_exact(a, b, M, m = None, nb_dummies=1,dummy_value=0,
 
     # E, F = get_E_F(a.shape[0], b.shape[0], backend=nx)
     # M = M - lambda1 * E + lambda2 * (F / (2 * delta ** 2) + np.log(delta * np.sqrt(2 * math.pi)))
-    M,a,b = compute_OPW_costs(M,lambda1 = 0, lambda2=0.1, delta=1, m=0.7,dropBothSides=False)
+    M,a,b = compute_OPW_costs(M,lambda1 = lambda1, lambda2=lambda2, delta=delta, m=m,dropBothSides=False)
     a = a.double()
     b = b.double()
     M = M.double()
@@ -167,27 +167,28 @@ def get_E_F(N, M, backend):
     return E, F
 
 
-def opw_distance(D,nx, lambda1=1, lambda2=0.1, delta=1):
-  N =D.shape[0]
-  M = D.shape[1]
+def opw_distance(D, lambda1=1, lambda2=0.1, delta=1):
+    N =D.shape[0]
+    M = D.shape[1]
+    nx = get_backend(D)
+    E = nx.zeros((N,M)).to(D.device)
+    for i in range(N):
+        for j in range(M):
+            E[i,j] = 1/((i/N - j/M)**2 + 1)
 
-  E = nx.zeros((N,M)).to(D.device)
-  for i in range(N):
-    for j in range(M):
-      E[i,j] = 1/((i/N - j/M)**2 + 1)
+    l = nx.zeros((N,M)).to(D.device)
+    for i in range(N):
+        for j in range(M):
+            l[i,j] = abs(i/N - j/M)/(np.sqrt(1/N**2 + 1/M**2))
+    F = l**2
+    return D - lambda1*E + lambda2*(F/2 + np.log(delta*np.sqrt(2*np.pi)))
 
-  l = nx.zeros((N,M)).to(D.device)
-  for i in range(N):
-    for j in range(M):
-      l[i,j] = abs(i/N - j/M)/(np.sqrt(1/N**2 + 1/M**2))
-  F = l**2
-  return D - lambda1*E + lambda2*(F/2 + np.log(delta*np.sqrt(2*np.pi)))
-
-def compute_OPW_costs(D ,lambda1, lambda2, delta=1, m=None, dropBothSides = False):
+def compute_OPW_costs(D,lambda1, lambda2, delta, m, dropBothSides):
+    nx = get_backend(D)
     a = np.ones(D.shape[0])/D.shape[0]
     b = np.ones(D.shape[1])/D.shape[1]
     
-    D = opw_distance(D, lambda1, lambda2, delta)
+    D = opw_distance(D, lambda1, lambda2, delta,nx)
     if dropBothSides:
         a,b,D = POT_feature_2sides(a,b,D,m)
     else:
