@@ -195,8 +195,8 @@ def compute_OPW_costs(D,lambda1, lambda2, delta, m, dropBothSides):
         #drop side b
         a,b,D = POT_feature_1side(a,b,D,m)
 
-    a = torch.from_numpy(a).to(D.device)
-    b = torch.from_numpy(b).to(D.device)
+    # a = torch.from_numpy(a).to(D.device)
+    # b = torch.from_numpy(b).to(D.device)
 
     return D,a,b
 
