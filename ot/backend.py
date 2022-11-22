@@ -1663,7 +1663,8 @@ class TorchBackend(Backend):
         return torch.log(a)
 
     def sqrt(self, a):
-        return torch.sqrt(a)
+        # return torch.sqrt(a)
+        return torch.sqrt(torch.tensor(a)).item()
 
     def power(self, a, exponents):
         return torch.pow(a, exponents)
